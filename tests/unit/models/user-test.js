@@ -29,3 +29,23 @@ test('property - password', function(){
   ok(property.isAttribute, 'password is not an attribute on User');
   equal(property.type, 'string', 'password property is not a string');
 });
+
+test('property: zipcode', function(){
+  expect(2);
+
+  var User = this.store().modelFor('user');
+  var property = User.metaForProperty('zipcode');
+
+  ok(property.isAttribute, 'zipcode is not an attribute on User');
+  equal(property.type, 'string', 'zipcode property is not a string');
+});
+
+test('property: phone', function(){
+  expect(2);
+
+  var User = this.store().modelFor('user');
+  var property = User.metaForProperty('phone');
+
+  ok(property.isAttribute, 'phone is not an attribute on User');
+  equal(property.type, 'string', 'phone property is not a string');
+});
