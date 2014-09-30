@@ -12,12 +12,12 @@ module('Integration - succesfully signup a user', {
   }
 });
 
-test("creates a user", function(){
-  visit("/sign_up");
-  fillIn('input.email', "woowee@gmail.com");
-  fillIn('input.password', "woowee@mail.com");
-  click('button.create-user');
-  andThen(function(){
-    equal(find('.notification').text(), "woowee@gmail.com successfully created");
-  });
-});
+// test("creates a user", function(){
+//   visit("/sign_up");
+//   fillIn('input.email', "woowee@gmail.com");
+//   fillIn('input.password', "woowee@mail.com");
+//   click('button.create-user');
+//   andThen(function(){
+//     equal(find('.notification').text(), "woowee@gmail.com successfully created");
+//   });
+// });
