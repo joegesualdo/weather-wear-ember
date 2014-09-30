@@ -18,6 +18,14 @@ module('Integration - succesfully signup a user', {
 //   fillIn('input.password', "woowee@mail.com");
 //   click('button.create-user');
 //   andThen(function(){
-//     equal(find('.notification').text(), "woowee@gmail.com successfully created");
+//     equal(currentPath(), 'index'); 
+//     equal(find('li.user').length, 1, "woowee@gmail.com successfully created");
 //   });
 // });
+
+test("see a list of users", function(){
+  visit("/");
+  andThen(function(){
+    equal(find('.title'), 'Welcome to Weather Wear');
+  });
+});

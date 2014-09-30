@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
         password: this.get('password')
       });
       user.save();
+      this.transitionToRoute('index');
     }
   }
 });
