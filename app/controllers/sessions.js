@@ -65,7 +65,7 @@ export default Ember.Controller.extend({
           _this.store.find('user', response.user_id).then(function(user) {
             _this.setProperties({
               token: response.auth_token,
-              currentUser: user.get('email')
+              currentUser: user.get('email'),
             });
             // If user was attempting to visit a page that required authentication
             // then we route them back there
