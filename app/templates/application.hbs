@@ -1,3 +1,7 @@
 <h2 class='title'>Welcome to Weather Wear</h2>
+{{#if currentUser }}
+  <button {{action 'logout'}}>Log out</button>
+{{else}}
 
+{{/if}}
 {{outlet}}
