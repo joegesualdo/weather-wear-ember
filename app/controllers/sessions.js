@@ -42,6 +42,8 @@ export default Ember.Controller.extend({
   // Actions:  ------------------------------------------------
   actions: {
     loginUser: function() {
+      var _this = this;
+
       var data = this.getProperties('email', 'password');
       var attemptedTrans = this.get('attemptedTransition');
 
@@ -52,37 +54,58 @@ export default Ember.Controller.extend({
       });
 
       // POST to sign in user
-      return Ember.$.post('/api/v1/sign_in', data).then((function(_this) {
-        // If ajax POST is successful
-        return function(response) {
-          // Set the X-AUTH-TOKEN header with the current users auth token
-          Ember.$.ajaxSetup({
-            headers: {
-              'X-AUTH-TOKEN': response.auth_token
-            }
-          });
-          // Get the user object for the user that just signed in 
-          _this.store.find('user', response.user_id).then(function(user) {
-            _this.setProperties({
-              token: response.auth_token,
-              currentUser: user.get('email'),
+      Ember.$.post('/api/v1/sign_in', data).then(fullfillmentCallback, rejectionCallback);
+      
+      // Start Response handler -------------------------
+
+      function fullfillmentCallback(response) {
+        // IMPORTANT: You MUST wrap all success and error callback for ajax request in EMber.run
+        Ember.run(function(){
+          
+          // If ajax POST is successful---------------------
+
+            // Set the X-AUTH-TOKEN header with the current users auth token
+            Ember.$.ajaxSetup({
+              headers: {
+                'X-AUTH-TOKEN': response.auth_token
+              }
             });
-            // If user was attempting to visit a page that required authentication
-            // then we route them back there
-            if (attemptedTrans) {
-              attemptedTrans.retry();
-              _this.set('attemptedTransition', null);
-            } else {
-              _this.transitionToRoute('index');
-            }
-          });
-        };
-      })(this), function(error) {
-        // If ajax POST fails 
-        if (error.status === 401) {
-          alert("wrong user or password, please try again");
-        }
-      });
+            // END: Set the X-AUTH-TOKEN header with the current users auth token
+
+            // Get the user object for the user that just signed in ---------
+            _this.store.find('user', response.user_id).then(function(user) {
+              _this.setProperties({
+                token: response.auth_token,
+                currentUser: user.get('email'),
+              });
+              // If user was attempting to visit a page that required authentication
+              // then we route them back there
+              if (attemptedTrans) {
+                attemptedTrans.retry();
+                _this.set('attemptedTransition', null);
+              } else {
+                _this.transitionToRoute('index');
+              }
+            });
+            // END: Get the user object for the user that just signed in ---------
+            
+          // If ajax POST is successful---------------------
+        });
+      }
+
+      function rejectionCallback(error) {
+        // IMPORTANT: You MUST wrap all success and error callback for ajax request in EMber.run
+        // OR your test will give you errors
+        Ember.run(function(){
+            // If ajax POST fails 
+          if (error.status === 401) {
+            console.log("wrong user or password, please try again");
+          } else {
+            console.log("something went wrong with logging in");
+          }
+        });
+      }
+
     }
   }
 });
