@@ -37,6 +37,7 @@ module('Integration - see a list of users on homepage', {
   // Teardown:  ------------------------------------------------
   teardown: function() {
     Ember.run(App, 'destroy');
+    server.shutdown();
   }
 });
 
