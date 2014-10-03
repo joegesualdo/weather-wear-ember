@@ -95,7 +95,7 @@ export default Ember.Controller.extend({
           if (error.status === 401) {
             console.log("wrong user or password, please try again");
           } else {
-            console.log("something went wrong with logging in");
+            console.log("something went wrong with logging in", error);
           }
         });
       }
