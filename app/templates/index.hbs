@@ -1,8 +1,11 @@
 {{#if currentUser }}
-  {{input id="zipcode" value=zipcode}}
-  <button id="submit-zip" {{action 'submitZip'}}>Search</button>
+  <form {{action 'submitZip'}}>
+    {{input id="zipcode" value=zipcode}}
+    <button id="submit-zip" type="submit">Search</button>
+  </form>
   <div>Current Weather:<span id="current-temperature">{{currentTemp}}</span></div>
 {{/if}}
+
 {{#each}}
   <li class="user">{{email}}</li>
 {{/each}}
