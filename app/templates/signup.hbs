@@ -1,8 +1,9 @@
 <h1 class="title">Signup</h1>
 
+<h1>Sign up</h1>
 <form {{action 'createUser' on="submit"}}>
   {{input classBinding="email" value=email}}
-  {{input classBinding="password" value=password}}
+  {{input classBinding="password" type="password" value=password}}
   <button class="create-user">
     Create User
   </button>

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  needs: ['application'],
   actions: {
     createUser: function(){
       var user = this.store.createRecord('user', {
@@ -11,6 +12,9 @@ export default Ember.Controller.extend({
       // Saves the user and handles the success and error responses
       var self = this;
       user.save().then(function() {
+          // sign in the user
+          self.get('controllers.application').send('loginUser', self.get('email'), self.get('password'));
+          // transition to home
           self.transitionToRoute('index');
         }, function(resp) {
           if (resp.responseJSON) {

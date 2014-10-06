@@ -1,4 +1,4 @@
-{{#if currentUser }}
+{{#if isAuthenticated}}
   <form {{action 'submitZip'}}>
     {{input id="zipcode" value=zipcode}}
     <button id="submit-zip" type="submit">Search</button>
