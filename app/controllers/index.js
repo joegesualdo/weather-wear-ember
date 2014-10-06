@@ -1,11 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.ArrayController.extend({
-  needs: ['sessions'],
+  needs: ['application'],
 
-  currentUser: (function() {
-      return this.get('controllers.sessions.currentUser');
-    }).property('controllers.sessions.currentUser'),
+  isAuthenticated: Ember.computed.alias('controllers.application.isAuthenticated'),
+  currentUser: Ember.computed.alias('controllers.application.currentUser'),
 
   actions: {
     submitZip: function(){

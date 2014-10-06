@@ -1,7 +1,16 @@
 <h2 class='title'>Welcome to Weather Wear</h2>
 
+{{#unless isAuthenticated}}
+  <form {{action "loginUser" email password on="submit"}}>
+    {{input id="email" value=email type="text" placeholder="email"}}
+    {{input id="password" value=password type="password" placeholder="password"}}
+    <button type="submit" id="login">Login</button>
+  </form>
+  {{#link-to 'signup'}}Sign Up{{/link-to}}
+{{/unless}}
 
-{{#if currentUser }}
+
+{{#if isAuthenticated}}
   <div> Signed in as <span class="users-email">{{currentUser}}</span></div>
   <button id="logout" {{action 'logout'}}>Log out</button>
 {{/if}}

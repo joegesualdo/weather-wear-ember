@@ -1,51 +1,27 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  init: function() {
-    this._super();
-    if (Ember.$.cookie('access_token')) {
-      Ember.$.ajaxSetup({
-        headers: {
-          'X-AUTH-TOKEN': Ember.$.cookie('access_token')
-        }
-      });
-    }
-  },
-  attemptedTransition: null,
-  token: Ember.$.cookie('access_token'),
-  currentUser: Ember.$.cookie('auth_user'),
-  tokenChanged: (function() {
-    if (Ember.isEmpty(this.get('token'))) {
-      Ember.$.removeCookie('access_token');
-      Ember.$.removeCookie('auth_user');
-    } else {
-      Ember.$.cookie('access_token', this.get('token'));
-      Ember.$.cookie('auth_user', this.get('currentUser'));
-    }
-  }).observes('token'),
-  
-  // reset the current user
-  reset: function() {
-    this.setProperties({
-      email: null,
-      password: null,
-      token: null,
-      currentUser: null
-    });
-    Ember.$.ajaxSetup({
-      headers: {
-        'Authorization': 'Bearer none'
-      }
-    });
-  },
-
+  // setupController: function(controller) {
+  //   // controller.reset();
+  // },
+  // beforeModel: function() {
+  //   if (!Ember.isEmpty(this.controllerFor('application').get('token'))) {
+  //     this.transitionTo('secret');
+  //   }
+  // },
   // Actions:  ------------------------------------------------
   actions: {
-    loginUser: function() {
+    // create a global logout action
+    logout: function() {
+      // get the sessions controller instance and reset it to then transition to the sessions route
+      this.controllerFor('application').reset();
+      this.transitionTo('index');
+    },
+    loginUser: function(email, password) {
       var _this = this;
 
-      var data = this.getProperties('email', 'password');
-      var attemptedTrans = this.get('attemptedTransition');
+      var data = {email: email, password: password};
+      var attemptedTrans = this.controllerFor('application').get('attemptedTransition');
 
       // Reset the form fields after submitting form
       this.setProperties({
@@ -69,7 +45,7 @@ export default Ember.Mixin.create({
             // END: Set the X-AUTH-TOKEN header with the current users auth token
             // Get the user object for the user that just signed in ---------
             _this.store.find('user', response.user_id).then(function(user) {
-              _this.setProperties({
+              _this.controllerFor('application').setProperties({
                 token: response.auth_token,
                 currentUser: user.get('email'),
               });
@@ -77,9 +53,9 @@ export default Ember.Mixin.create({
               // then we route them back there
               if (attemptedTrans) {
                 attemptedTrans.retry();
-                _this.set('attemptedTransition', null);
+                _this.controllerFor('application').set('attemptedTransition', null);
               } else {
-                _this.transitionToRoute('index');
+                _this.transitionTo('index');
               }
             });
             // END: Get the user object for the user that just signed in ---------
@@ -102,4 +78,4 @@ export default Ember.Mixin.create({
 
     }
   }
-})
+});
