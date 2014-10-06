@@ -1,1 +1,2 @@
-## Weather Wear - Ember.js Front-end
+## Weather Wear - Ember.js Front-end for Weather wear
+
